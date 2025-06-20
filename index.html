@@ -521,7 +521,7 @@
                 <h1>DATABASE SCRIPT</h1>
             </div>
             <div class="header-actions">
-                <a href="https://whatsapp.com/channel/0029Vb61yMdADTOAckZpnk24" class="download-btn" target="_blank">
+                <a href="https://whatsapp.com/channel/0029VbAilFUBPzjeWwodpF3i" class="download-btn" target="_blank">
                     <i class="fas fa-download"></i> DOWNLOAD SCRIPT
                 </a>
                 <button class="theme-toggle" id="themeToggle">
@@ -609,7 +609,6 @@
                             <th>Nomor</th>
                             <th>Tanggal</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="dataTableBody">
@@ -627,7 +626,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -792,11 +791,6 @@
                         <td>${item.value}</td>
                         <td>${formattedDate}</td>
                         <td><span class="badge ${isToday ? 'badge-success' : ''}">${isToday ? 'New' : ''}</span></td>
-                        <td>
-                            <button class="action-btn" onclick="deleteData('${item.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
                     `;
                     dataTableBody.appendChild(row);
                 });
@@ -915,20 +909,6 @@
             chart.update();
         }
 
-        // Delete data
-        function deleteData(id) {
-            if (confirm('Are you sure you want to delete this data?')) {
-                remove(ref(db, `nomor/${id}`))
-                    .then(() => {
-                        showStatus('Data deleted successfully!', 'success');
-                    })
-                    .catch(err => {
-                        console.error('Error deleting data:', err);
-                        showStatus('Failed to delete data: ' + err.message, 'error');
-                    });
-            }
-        }
-
         // Search functionality
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
@@ -954,9 +934,6 @@
                 addData(dataInput.value);
             }
         });
-
-        // Make deleteData function available globally for the table buttons
-        window.deleteData = deleteData;
 
         // Initial load
         loadData();
